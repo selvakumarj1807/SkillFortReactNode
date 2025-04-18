@@ -12,13 +12,15 @@ import Buttons from "./pages/UiElements/Buttons";
 import LineChart from "./pages/Charts/LineChart";
 import BarChart from "./pages/Charts/BarChart";
 import Calendar from "./pages/Calendar";
-import BasicTables from "./pages/Tables/BasicTables";
+//import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
 import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import EnquiryListAppLAyOut from "./layout/EnquiryListAppLAyOut";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
+import TodayEnquiryList from "./pages/todayEnquiryList";
+
 
 export default function App() {
   return (
@@ -36,7 +38,9 @@ export default function App() {
           <Route element={<EnquiryListAppLAyOut />}>
             <Route index path="/EnquiryList" element={<Home />} />
             {/* Tables */}
-            <Route path="/basic-tables" element={<BasicTables />} />
+            <Route path="/basic-tables" element={<UserProfiles />} />
+            <Route path="/todayEnquiryList" element={<TodayEnquiryList />} />
+            <Route path="/addRequiredCource" element={<FormElements />} />
           </Route>
 
           {/* Others Page */}

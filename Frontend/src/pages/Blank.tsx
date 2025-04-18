@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import PageMeta from "../components/common/PageMeta";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./datepicker.css"; // Custom CSS for responsiveness
 import axios from 'axios';
-
+import Swal from 'sweetalert2';
 
 export default function StudentEnquiryForm() {
   const [isWorking, setIsWorking] = useState(false); // state to toggle fields
@@ -15,9 +15,27 @@ export default function StudentEnquiryForm() {
 
   const [loading, setLoading] = useState(false);
 
+  // Inside your component:
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/v1/masterManagement/addCourse/");
+        if (res.data.success) {
+          setCourses(res.data.addCourse);
+        }
+      } catch (err) {
+        console.error("Error fetching courses", err);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // 🔒 Disable button
+    setLoading(true);
 
     const formEl = e.target as HTMLFormElement;
     const form = new FormData(formEl);
@@ -27,19 +45,99 @@ export default function StudentEnquiryForm() {
     formData.fromDate = fromDate ? fromDate.toISOString() : '';
     formData.toDate = toDate ? toDate.toISOString() : '';
 
-    try {
-      const response = await axios.post(
-        'http://localhost:8000/api/v1/enquiry/new',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+    // Required fields
+    const requiredFields = [
+      'name',
+      'mobile',
+      'email',
+      'education',
+      'yearOfPassout',
+      'percentage',
+      'requiredCourse',
+      'placement',
+      'work',
+      'address',
+      'panorAadhar',
+      'referName',
+      'referPhone',
+    ];
 
-      alert('Enquiry submitted successfully!');
-      console.log('Saved data:', response.data);
+    if (!selectedDate) {
+      Swal.fire({ icon: 'error', title: 'Validation Error', text: 'Date of Birth is required.' });
+      setLoading(false);
+      return;
+    }
+
+    // General field presence check
+    for (let field of requiredFields) {
+      if (!formData[field]) {
+        Swal.fire({ icon: 'error', title: 'Validation Error', text: `Please enter ${field}` });
+        setLoading(false);
+        return;
+      }
+    }
+
+    // ✅ Mobile & ReferPhone: 10-digit validation
+    const mobileRegex = /^\d{10}$/;
+    if (!mobileRegex.test(formData.mobile)) {
+      Swal.fire({ icon: 'error', title: 'Validation Error', text: 'Mobile number must be 10 digits.' });
+      setLoading(false);
+      return;
+    }
+
+    if (!mobileRegex.test(formData.referPhone)) {
+      Swal.fire({ icon: 'error', title: 'Validation Error', text: 'Referal Mobile No must be 10 digits.' });
+      setLoading(false);
+      return;
+    }
+
+    // ✅ Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      Swal.fire({ icon: 'error', title: 'Validation Error', text: 'Enter a valid email address.' });
+      setLoading(false);
+      return;
+    }
+
+    // Extra validations if isWorking === true
+    if (isWorking) {
+      const workingFields = ['profession', 'company', 'designation', 'pf', 'uanNo'];
+      for (let field of workingFields) {
+        if (!formData[field]) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: `Please fill the ${field} field.`,
+          });
+          setLoading(false);
+          return;
+        }
+      }
+
+      if (!fromDate || !toDate) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Validation Error',
+          text: 'Please select both From Date and To Date',
+        });
+        setLoading(false);
+        return;
+      }
+    }
+
+    // ✅ Send request
+    try {
+      await axios.post('http://localhost:8000/api/v1/enquiry/new', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Enquiry Submitted!',
+        text: 'Your enquiry has been successfully submitted.',
+      });
 
       formEl.reset();
       setSelectedDate(null);
@@ -47,12 +145,16 @@ export default function StudentEnquiryForm() {
       setToDate(null);
       setIsWorking(false);
     } catch (error: any) {
-      console.error('Submission error:', error.response?.data || error.message);
-      alert('Failed to submit enquiry.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Submission Failed!',
+        text: error.response?.data?.message || 'Something went wrong!',
+      });
     } finally {
-      setLoading(false); // ✅ Enable button again
+      setLoading(false);
     }
   };
+
 
   return (
     <div>
@@ -185,16 +287,14 @@ export default function StudentEnquiryForm() {
                 id="requiredCourse"
                 name="requiredCourse"
                 className="rounded-lg border border-gray-300 bg-white p-3 text-gray-800 shadow-sm focus:ring focus:ring-blue-500 dark:border-gray-700 dark:bg-white/[0.03]"
+                defaultValue=""
               >
-                <option value="">-- Select Course --</option>
-                <option value="fullstack">Full Stack Development</option>
-                <option value="python">Python Programming</option>
-                <option value="datascience">Data Science</option>
-                <option value="java">Java Programming</option>
-                <option value="mern">MERN Stack</option>
-                <option value="flutter">Flutter Development</option>
-                <option value="digitalmarketing">Digital Marketing</option>
-                <option value="uiux">UI/UX Design</option>
+                <option value="" disabled>-- Select Course --</option>
+                {courses.map((course: any) => (
+                  <option key={course._id} value={course.course}>
+                    {course.course}
+                  </option>
+                ))}
               </select>
             </div>
 
