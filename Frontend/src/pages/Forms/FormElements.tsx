@@ -17,7 +17,7 @@ export default function CourseManager() {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/v1/masterManagement/addCourse/");
+      const response = await axios.get("https://skillfortreactnode.onrender.com/api/v1/masterManagement/addCourse/");
       if (response.data.success) {
         setCourses(response.data.addCourse);
       }
@@ -35,7 +35,7 @@ export default function CourseManager() {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8000/api/v1/masterManagement/addCourse/new", {
+      const response = await axios.post("https://skillfortreactnode.onrender.com/api/v1/masterManagement/addCourse/new", {
         course: course.trim(),
       });
 
@@ -62,7 +62,7 @@ export default function CourseManager() {
 
     if (confirm.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:8000/api/v1/masterManagement/addCourse/${id}`);
+        await axios.delete(`https://skillfortreactnode.onrender.com/api/v1/masterManagement/addCourse/${id}`);
         Swal.fire({ icon: "success", title: "Deleted!", text: "Course deleted successfully!" });
         fetchCourses();
       } catch (error) {
@@ -79,7 +79,7 @@ export default function CourseManager() {
 
   const handleEditSubmit = async () => {
     try {
-      await axios.put(`http://localhost:8000/api/v1/masterManagement/addCourse/${editId}`, {
+      await axios.put(`https://skillfortreactnode.onrender.com/api/v1/masterManagement/addCourse/${editId}`, {
         course: editCourse.trim(),
       });
       Swal.fire({ icon: "success", title: "Updated", text: "Course updated successfully!" });

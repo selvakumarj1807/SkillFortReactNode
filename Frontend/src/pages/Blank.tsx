@@ -21,7 +21,7 @@ export default function StudentEnquiryForm() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/v1/masterManagement/addCourse/");
+        const res = await axios.get("https://skillfortreactnode.onrender.com/api/v1/masterManagement/addCourse/");
         if (res.data.success) {
           setCourses(res.data.addCourse);
         }
@@ -127,7 +127,7 @@ export default function StudentEnquiryForm() {
 
     // ✅ Send request
     try {
-      await axios.post('http://localhost:8000/api/v1/enquiry/new', formData, {
+      await axios.post('https://skillfortreactnode.onrender.com/api/v1/enquiry/new', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
