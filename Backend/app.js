@@ -5,10 +5,15 @@ const errorMiddleware = require('./middlewares/error');
 const cors = require('cors');
 
 
-// ✅ Enable CORS for all origins
+// ✅ Enable CORS for localhost and deployed frontend
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || origin.startsWith("http://localhost")) {
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://skill-fort-react-node.vercel.app"
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -16,6 +21,7 @@ app.use(cors({
   },
   credentials: true,
 }));
+
 
 app.use(express.json());
 
