@@ -71,3 +71,55 @@ exports.getSingleEnquiry = catchAsyncError(async (req, res, next) => {
       enquiry
     });
   });
+
+
+exports.updateEnquiry = async (req, res, next) => {
+  try {
+      let enquiry = await Enquiry.findById(req.params.id);
+
+      if (!enquiry) {
+          return res.status(404).json({
+              success: false,
+              message: "Enquiry not found"
+          });
+      }
+
+      enquiry = await Enquiry.findByIdAndUpdate(req.params.id, req.body, {
+          new: true,
+          runValidators: true
+      })
+
+      res.status(200).json({
+          success: true,
+          enquiry
+      })
+  } catch (error) {
+      return res.status(500).json({
+          success: false,
+          message: "Server Error"
+      });
+  }
+}
+
+exports.deleteEnquiry = async (req, res, next) => {
+  try {
+      const enquiry = await Enquiry.findByIdAndDelete(req.params.id);
+
+      if (!enquiry) {
+          return res.status(404).json({
+              success: false,
+              message: "Enquiry not found"
+          });
+      }
+
+      res.status(200).json({
+          success: true,
+          message: "Enquiry Deleted!"
+      });
+  } catch (error) {
+      return res.status(500).json({
+          success: false,
+          message: "Server Error"
+      });
+  }
+}

@@ -20,6 +20,7 @@ import EnquiryListAppLAyOut from "./layout/EnquiryListAppLAyOut";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import TodayEnquiryList from "./pages/todayEnquiryList";
+import EnquiryDetails from "./pages/EnquiryDetails";
 
 
 export default function App() {
@@ -41,6 +42,7 @@ export default function App() {
             <Route path="/basic-tables" element={<UserProfiles />} />
             <Route path="/todayEnquiryList" element={<TodayEnquiryList />} />
             <Route path="/addRequiredCource" element={<FormElements />} />
+            <Route path="/enquiryDetails/:id" element={<EnquiryDetails />} />
           </Route>
 
           {/* Others Page */}
