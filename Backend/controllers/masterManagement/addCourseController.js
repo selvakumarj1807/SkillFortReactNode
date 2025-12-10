@@ -76,3 +76,27 @@ exports.deleteAddCourse = async(req, res, next) => {
         });
     }
 }
+
+const mongoose = require('mongoose');
+
+exports.getSingleCourse = async (req, res, next) => {
+    try {
+        const isValidObjectId = mongoose.Types.ObjectId.isValid(req.params.id);
+        if (!isValidObjectId) {
+            return next(new ErrorHandler(`Resource not found: ${req.params.id}`, 400));
+        }
+
+        const addCourse = await AddCourse.findById(req.params.id);
+
+        if (!addCourse) {
+            return next(new ErrorHandler('Corse not found', 404));
+        }
+
+        res.status(200).json({
+            success: true,
+            addCourse
+        });
+    } catch (err) {
+        next(err);
+    }
+};

@@ -24,7 +24,7 @@ export default function TodayEnquiryList() {
   useEffect(() => {
     const fetchEnquiries = async () => {
       try {
-        const { data } = await axios.get("https://skillfortreactnode.onrender.com/api/v1/enquiry");
+        const { data } = await axios.get("http://localhost:8000/api/v1/enquiry");
         setEnquiries(data.enquiry);
       } catch (error) {
         console.error("Failed to fetch enquiries", error);

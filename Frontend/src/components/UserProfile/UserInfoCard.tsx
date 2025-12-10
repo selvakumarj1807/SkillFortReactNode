@@ -41,7 +41,7 @@ export default function UserInfoCard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`https://skillfortreactnode.onrender.com/api/v1/enquiry/${id}`);
+        const res = await axios.get(`http://localhost:8000/api/v1/enquiry/${id}`);
         setData(res.data.enquiry);
       } catch (err) {
         console.error("Failed to fetch enquiry details");

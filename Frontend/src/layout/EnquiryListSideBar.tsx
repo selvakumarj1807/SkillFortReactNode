@@ -20,16 +20,16 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
-    name: "Dashboard",
-    subItems: [{ name: "Enquiry List", path: "/basic-tables", pro: false },
+    name: "Enquiry Management",
+    subItems: [{ name: "Enquiry List", path: "/enquiryList", pro: false },
     { name: "Today Enquiry List", path: "/todayEnquiryList", pro: false }
     ],
   },
   {
     icon: <GridIcon />,
-    name: "Master Management",
-    subItems: [{ name: "Add Required Courses", path: "/addRequiredCource", pro: false },
-  
+    name: "Student Management",
+    subItems: [{ name: "Course", path: "/addRequiredCource", pro: false },
+    //{ name: "Add Classes", path: "/addRequiredClasses", pro: false }
     ],
   },
 
