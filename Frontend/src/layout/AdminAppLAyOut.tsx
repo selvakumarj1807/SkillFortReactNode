@@ -1,8 +1,8 @@
 import { SidebarProvider, useSidebar } from "../context/SidebarContext";
 import { Outlet } from "react-router";
-import AppHeader from "./AppHeaderEnquiryList";
+import AdminHeader from "./AdminHeader";
 import Backdrop from "./Backdrop";
-import AppSidebar from "./EnquiryListSideBar";
+import AdminSidebar from "./AdminSidebar";
 
 const LayoutContent: React.FC = () => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
@@ -10,7 +10,7 @@ const LayoutContent: React.FC = () => {
   return (
     <div className="min-h-screen xl:flex">
       <div>
-        <AppSidebar />
+        <AdminSidebar />
         <Backdrop />
       </div>
       <div
@@ -18,7 +18,7 @@ const LayoutContent: React.FC = () => {
           isExpanded || isHovered ? "lg:ml-[290px]" : "lg:ml-[90px]"
         } ${isMobileOpen ? "ml-0" : ""}`}
       >
-        <AppHeader />
+        <AdminHeader />
         <div className="p-4 mx-auto max-w-screen-2xl md:p-6">
           <Outlet />
         </div>

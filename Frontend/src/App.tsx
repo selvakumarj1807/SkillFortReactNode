@@ -1,20 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import AdminSignIn from "./pages/AuthPages/AdminSignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import NotFound from "./pages/OtherPage/NotFound";
-import UserProfiles from "./pages/UserProfiles";
-import FormElements from "./pages/Forms/FormElements";
+import EnquiryList from "./pages/EnquiryList";
+import AddRequiredCource from "./pages/Forms/AddRequiredCource";
 import AddClasses from "./pages/Forms/AddClasses";
 import AddStudents from "./pages/Forms/AddStudents";
 import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
-import EnquiryListAppLAyOut from "./layout/EnquiryListAppLAyOut";
+import AdminAppLAyOut from "./layout/AdminAppLAyOut";
 import { ScrollToTop } from "./components/common/ScrollToTop";
-import Home from "./pages/Dashboard/Home";
+//import Home from "./pages/Dashboard/Home";
 import TodayEnquiryList from "./pages/todayEnquiryList";
 import EnquiryDetails from "./pages/EnquiryDetails";
-import EnquiryListHome from "./pages/Dashboard/EnquiryListHome";
+import AdminHome from "./pages/Dashboard/AdminHome";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Interviews from "./pages/Forms/Interviews";
+import StudentAppLayOut from "./layout/StudentAppLayOut";
+import StudentHome from "./pages/Dashboard/StudentHome";
 
 export default function App() {
   return (
@@ -22,27 +25,35 @@ export default function App() {
       <Router>
         <ScrollToTop />
         <Routes>
-          {/* Dashboard Layout */}
+          {/* Enquiry Layout */}
           <Route element={<AppLayout />}>
-            <Route index path="/" element={<Home />} />
+            <Route index path="/" element={<Navigate to="/enquiryForm" replace />} />
             <Route path="/enquiryForm" element={<Blank />} />
           </Route>
 
-          {/* ENquiry List Layout */}
+          {/* Admin Layout */}
           <Route
             element={
               <ProtectedRoute>
-                <EnquiryListAppLAyOut />
+                <AdminAppLAyOut />
               </ProtectedRoute>
             }
-          >            <Route index path="/admin" element={<EnquiryListHome />} />
+          >
+            <Route index path="/admin" element={<AdminHome />} />
             {/* Tables */}
-            <Route path="/enquiryList" element={<UserProfiles />} />
+            <Route path="/enquiryList" element={<EnquiryList />} />
             <Route path="/todayEnquiryList" element={<TodayEnquiryList />} />
-            <Route path="/addRequiredCource" element={<FormElements />} />
+            <Route path="/addRequiredCource" element={<AddRequiredCource />} />
             <Route path="/courseDetails/:id" element={<AddClasses />} />
             <Route path="/enquiryDetails/:id" element={<EnquiryDetails />} />
             <Route path="/addStudents/:id" element={<AddStudents />} />
+            <Route path="/interviews" element={<Interviews />} />
+          </Route>
+
+          {/* Student Layout */}
+          <Route element={<StudentAppLayOut />}>
+            <Route index path="/student" element={<StudentHome />} />
+            <Route path="/enquiryForm" element={<Blank />} />
           </Route>
 
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {  useNavigate } from "react-router-dom";
-import { DropdownItem } from "../ui/dropdown/DropdownItem";
+import { useNavigate } from "react-router-dom";
+//import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 
 interface UserData {
@@ -63,18 +63,19 @@ export default function UserDropdown() {
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
       >
+        {/* 
         <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
           <img src="/images/user/owner.jpg" alt="User" />
         </span>
+        */}
 
         <span className="block mr-1 font-medium text-theme-sm">
           {user ? user.role.name.toUpperCase() : "Loading..."}
         </span>
 
         <svg
-          className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+            }`}
           width="18"
           height="20"
           viewBox="0 0 18 20"
@@ -105,6 +106,7 @@ export default function UserDropdown() {
           </span>
         </div>
 
+        {/* 
         <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
           <li>
             <DropdownItem
@@ -131,6 +133,7 @@ export default function UserDropdown() {
             </DropdownItem>
           </li>
         </ul>
+        */}
 
         <button
           onClick={handleLogout}

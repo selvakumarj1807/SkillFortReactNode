@@ -185,7 +185,9 @@ export default function UserProfiles() {
               className="rounded-xl border p-4 flex flex-col items-center text-center"
             >
               <Link to={`/enquiryDetails/${item._id}`} className="text-center hover:opacity-90">
+                {/* 
                 <p className="text-orange-500 font-medium text-sm">ENQUIRY ID : {item.enquiryId}</p>
+                */}
                 <p className="text-lg font-semibold">{item.name}</p>
                 <span className="inline-block bg-gray-200 text-sm px-2 py-1 rounded mt-2 mb-4">
                   {item.requiredCourse}

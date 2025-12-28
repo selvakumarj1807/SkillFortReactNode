@@ -20,17 +20,8 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
-    name: "Enquiry Management",
-    subItems: [{ name: "Enquiry List", path: "/enquiryList", pro: false },
-    { name: "Today Enquiry List", path: "/todayEnquiryList", pro: false }
-    ],
-  },
-  {
-    icon: <GridIcon />,
-    name: "Student Management",
-    subItems: [{ name: "Course", path: "/addRequiredCource", pro: false },
-    //{ name: "Add Classes", path: "/addRequiredClasses", pro: false }
-    ],
+    name: "Enquiry",
+    path: "/enquiryForm",
   },
 
 ];
@@ -235,7 +226,7 @@ const AppSidebar: React.FC = () => {
         className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"
           }`}
       >
-        <Link to="/EnquiryList">
+        <Link to="/student">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img

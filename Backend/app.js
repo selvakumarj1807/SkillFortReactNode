@@ -31,12 +31,14 @@ const enquiry = require('./routes/enquiry')
 const addCourse = require('./routes/masterManagement/addCourse')
 const addClasses = require('./routes/masterManagement/addClasses')
 const addStudents = require('./routes/masterManagement/addStudents')
+const addInterviewStudents = require('./routes/masterManagement/addInterviewStudents')
 const authRoutes = require("./routes/authRoutes");
 
 app.use('/api/v1', enquiry);
 app.use('/api/v1/masterManagement', addCourse);
 app.use('/api/v1/masterManagement', addClasses);
 app.use('/api/v1/masterManagement', addStudents);
+app.use('/api/v1/masterManagement', addInterviewStudents);
 
 app.use("/api/auth", authRoutes);
 

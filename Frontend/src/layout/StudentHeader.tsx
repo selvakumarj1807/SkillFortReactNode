@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 //import NotificationDropdown from "../components/header/NotificationDropdown";
-import UserDropdown from "../components/header/UserDropdown";
+import StudentDropdown from "../components/header/StudentDropdown";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -83,7 +83,7 @@ const AppHeader: React.FC = () => {
             {/* Cross Icon */}
           </button>
 
-          <Link to="/EnquiryList" className="lg:hidden">
+          <Link to="/student" className="lg:hidden">
             <img
               className="dark:hidden h-[50px]"
               src="./images/logo/skillfort.jpg"
@@ -131,7 +131,7 @@ const AppHeader: React.FC = () => {
           </div>
 
           {/* <!-- User Area --> */}
-          <UserDropdown />
+          <StudentDropdown />
         </div>
       </div>
     </header>

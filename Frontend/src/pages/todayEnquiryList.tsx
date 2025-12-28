@@ -111,7 +111,9 @@ export default function TodayEnquiryList() {
           {paginatedEnquiries.map((item) => (
             <div key={item._id} className="rounded-xl border p-4 text-center">
               <Link to={`/enquiryDetails/${item._id}`} className="text-center hover:opacity-90">
+                {/* 
                 <p className="text-orange-500 font-medium text-sm">ENQUIRY ID : {item.enquiryId}</p>
+                */}
                 <p className="text-lg font-semibold">{item.name}</p>
                 <span className="inline-block bg-gray-200 text-sm px-2 py-1 rounded mt-2 mb-4">
                   {item.requiredCourse}
@@ -146,8 +148,8 @@ export default function TodayEnquiryList() {
                 <button
                   key={page}
                   className={`px-3 py-1 rounded transition ${page === currentPage
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 hover:bg-gray-200"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 hover:bg-gray-200"
                     }`}
                   onClick={() => setCurrentPage(page)}
                 >

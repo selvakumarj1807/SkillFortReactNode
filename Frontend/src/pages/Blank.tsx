@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import PageBreadcrumb from "../components/common/PageBreadCrumb";
+//import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import PageMeta from "../components/common/PageMeta";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -162,9 +162,19 @@ export default function StudentEnquiryForm() {
         title="Skill Fort | Enquiry Form"
         description="Skill Fort is a leading online and offline learning platform that offers a wide range of courses to help you enhance your skills and knowledge."
       />
-      <PageBreadcrumb pageTitle="Enquiry Form" />
+      {/*<PageBreadcrumb pageTitle="Enquiry Form" />*/}
 
-      <div className="min-h-screen rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
+      <div className="min-h-screen
+    mx-auto
+    max-w-4xl
+    rounded-2xl
+    border border-gray-200 dark:border-gray-800
+    bg-white dark:bg-gray-900
+    px-6 py-8
+    sm:px-8 sm:py-10
+    lg:px-12 lg:py-12
+    xl:px-16 xl:py-14
+    shadow-lg">
         <div className="mx-auto w-full max-w-[630px] text-center">
           <h3 className="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 sm:text-2xl">
             Enquiry Form
