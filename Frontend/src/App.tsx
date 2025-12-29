@@ -18,6 +18,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Interviews from "./pages/Forms/Interviews";
 import StudentAppLayOut from "./layout/StudentAppLayOut";
 import StudentHome from "./pages/Dashboard/StudentHome";
+import StudentSignIn from "./pages/AuthPages/StudentSignIn";
+
+import StudentProtectedRoute from "./components/StudentProtectedRoute";
 
 export default function App() {
   return (
@@ -51,7 +54,11 @@ export default function App() {
           </Route>
 
           {/* Student Layout */}
-          <Route element={<StudentAppLayOut />}>
+          <Route element={
+            <StudentProtectedRoute>
+            <StudentAppLayOut />
+            </StudentProtectedRoute>    
+            }>
             <Route index path="/student" element={<StudentHome />} />
             <Route path="/enquiryForm" element={<Blank />} />
           </Route>
@@ -60,6 +67,7 @@ export default function App() {
 
           {/* Auth Layout */}
           <Route path="/adminSignin" element={<AdminSignIn />} />
+          <Route path="/studentSignin" element={<StudentSignIn />} />
           <Route path="/signup" element={<SignUp />} />
 
           {/* Fallback Route */}

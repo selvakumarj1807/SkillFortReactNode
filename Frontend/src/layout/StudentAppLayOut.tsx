@@ -1,6 +1,6 @@
 import { SidebarProvider, useSidebar } from "../context/SidebarContext";
 import { Outlet } from "react-router";
-import StudentHeader from "./AdminHeader";
+import StudentHeader from "./StudentHeader";
 import Backdrop from "./Backdrop";
 import StudentSidebar from "./StudentSidebar";
 

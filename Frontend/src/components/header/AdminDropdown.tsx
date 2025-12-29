@@ -50,7 +50,7 @@ export default function UserDropdown() {
   const handleLogout = async () => {
     try {
       await axios.post("http://localhost:8000/api/auth/logout");
-      localStorage.removeItem("token");
+      localStorage.removeItem("adminToken");
       navigate("/adminSignin");
     } catch (error) {
       console.error("Logout failed:", error);

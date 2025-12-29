@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
-import Checkbox from "../form/input/Checkbox";
+//import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
 
 export default function AdminSignInForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  //const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
@@ -42,7 +42,7 @@ export default function AdminSignInForm() {
 
       if (response.data && response.data.token) {
         // Save token
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("adminToken", response.data.token);
         navigate("/admin");
       } else {
         setErrors({ general: "Invalid login response. Please try again." });
@@ -116,6 +116,8 @@ export default function AdminSignInForm() {
 
               {/* Remember Me + Forgot Password */}
               <div className="flex items-center justify-between">
+                
+                {/* 
                 <div className="flex items-center gap-3">
                   <Checkbox checked={isChecked} onChange={setIsChecked} />
                   <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
@@ -128,6 +130,7 @@ export default function AdminSignInForm() {
                 >
                   Forgot password?
                 </Link>
+                */}
               </div>
 
               {/* General API error */}

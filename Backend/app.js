@@ -42,6 +42,8 @@ app.use('/api/v1/masterManagement', addInterviewStudents);
 
 app.use("/api/auth", authRoutes);
 
+app.use("/api/v1/studentAuth", require("./routes/studentAuthRoutes"));
+
 app.use(errorMiddleware);
 
 module.exports = app; 
