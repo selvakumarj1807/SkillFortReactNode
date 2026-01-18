@@ -2,16 +2,17 @@ const { request } = require('express');
 const mongoose = require('mongoose');
 
 const AddStudentSchema = new mongoose.Schema({
-    course: { type: String },
+    classId: { type: String},
     batch_name: { type: String },
-    batchStartDate: { type: String },
-    batchEndDate: { type: String },
-    classTime: { type: String },
-    whatsappLink: { type: String },
     studentName: { type: String },
     studentEmail: { type: String },
     studentPhone: { type: String },
     studentDescription: { type: String },
+    joinDate: { type: String },
+    endDate: { type: String },
+    techStack: { type: String },
+    followUp: { type: String },
+    interviewStudent: { type: String },
     createdAt: {
         type: Date,
         default: Date.now

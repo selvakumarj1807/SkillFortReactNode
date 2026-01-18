@@ -5,30 +5,24 @@ import { GroupIcon } from "../../icons";
 import PageBreadCrumbEnquiryList from "../../components/common/PageBreadCrumbEnquiryList";
 import PageMeta from "../../components/common/PageMeta";
 
+
 // ✅ Types
 type ClassData = {
   _id: string;
-  course: string;
   batch_name: string;
-  batchStartDate: string;
-  batchEndDate: string;
-  batchDescription: string;
-  whatsappLink: string;
-  classTime: string;
 };
 
 type StudentData = {
   _id: string;
-  course: string;
+  classId: string;
   batch_name: string;
   studentName: string;
   studentEmail: string;
   studentPhone: string;
   studentDescription: string;
-  batchStartDate: string;
-  batchEndDate: string;
-  classTime: string;
-  whatsappLink: string;
+  joinDate: string;   // ✅ NEW
+  endDate: string;    // ✅ NEW
+  interviewStudent?: "Yes" | "No"; // ✅ ADD THIS
 };
 
 export default function TodayEnquiryList() {
@@ -36,11 +30,22 @@ export default function TodayEnquiryList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [isInterviewModalOpen, setIsInterviewModalOpen] = useState(false);
+  const [interviewStudentId, setInterviewStudentId] = useState<string | null>(null);
+  const [interviewValue, setInterviewValue] = useState<"Yes" | "No">("No");
+
+
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
   };
+
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  };
+
 
   const [classData, setClassData] = useState<ClassData | null>(null);
   const [students, setStudents] = useState<StudentData[]>([]);
@@ -56,6 +61,8 @@ export default function TodayEnquiryList() {
     studentEmail: "",
     studentPhone: "",
     studentDescription: "",
+    joinDate: getTodayDate(),
+    endDate: "",
   });
 
   // Fetch Class + Students
@@ -101,12 +108,8 @@ export default function TodayEnquiryList() {
     try {
       await axios.post("http://localhost:8000/api/v1/masterManagement/addStudent", {
         ...studentForm,
-        course: classData.course,
+        classId: classData._id,
         batch_name: classData.batch_name,
-        batchStartDate: classData.batchStartDate,
-        batchEndDate: classData.batchEndDate,
-        classTime: classData.classTime,
-        whatsappLink: classData.whatsappLink,
       });
 
       alert("Student added!");
@@ -116,6 +119,8 @@ export default function TodayEnquiryList() {
         studentEmail: "",
         studentPhone: "",
         studentDescription: "",
+        joinDate: getTodayDate(),
+        endDate: "",
       });
 
       // refresh
@@ -138,6 +143,8 @@ export default function TodayEnquiryList() {
       studentEmail: stu.studentEmail,
       studentPhone: stu.studentPhone,
       studentDescription: stu.studentDescription,
+      joinDate: stu.joinDate,
+      endDate: stu.endDate,
     });
     setIsEditStudentModalOpen(true);
   };
@@ -151,12 +158,8 @@ export default function TodayEnquiryList() {
         `http://localhost:8000/api/v1/masterManagement/addStudent/${editStudentId}`,
         {
           ...studentForm,
-          course: classData.course,
+          classId: classData._id,
           batch_name: classData.batch_name,
-          batchStartDate: classData.batchStartDate,
-          batchEndDate: classData.batchEndDate,
-          classTime: classData.classTime,
-          whatsappLink: classData.whatsappLink,
         }
       );
 
@@ -197,7 +200,7 @@ export default function TodayEnquiryList() {
   return (
     <>
       <PageMeta title="Skill Fort | Class Details" description="Class Details" />
-      <PageBreadCrumbEnquiryList pageTitle={classData.course} />
+      <PageBreadCrumbEnquiryList pageTitle={classData.batch_name} />
 
       {/* Class Summary */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
@@ -248,9 +251,23 @@ export default function TodayEnquiryList() {
               {/* Expand on click */}
               {expandedId === stu._id && (
                 <div className="mt-3 animate-fadeIn">
+                  {/* 
                   <p className="text-sm text-gray-600">{stu.studentEmail}</p>
                   <p className="text-sm text-gray-500 mt-1">{stu.studentDescription}</p>
+                  */}
                   <div className="flex justify-end gap-3 mt-3">
+                    <button
+                      className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setInterviewStudentId(stu._id);
+                        setInterviewValue(stu.interviewStudent === "Yes" ? "Yes" : "No"); 
+                        setIsInterviewModalOpen(true);
+                      }}
+                    >
+                      Interview
+                    </button>
+
                     <button
                       className="rounded bg-yellow-500 px-3 py-1 text-white hover:bg-yellow-600"
                       onClick={(e) => {
@@ -305,6 +322,7 @@ export default function TodayEnquiryList() {
                 value={studentForm.studentEmail}
                 onChange={handleStudentChange}
                 className="w-full border p-2 rounded"
+                required
               />
               <input
                 type="tel"
@@ -318,6 +336,34 @@ export default function TodayEnquiryList() {
                 maxLength={10} // ✅ ensures no more than 10 digits
                 inputMode="numeric" // ✅ mobile keyboard shows numbers
               />
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  Join Date
+                </label>
+                <input
+                  type="date"
+                  name="joinDate"
+                  value={studentForm.joinDate}
+                  onChange={handleStudentChange}
+                  className="w-full border p-2 rounded"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  End Date
+                </label>
+                <input
+                  type="date"
+                  name="endDate"
+                  value={studentForm.endDate}
+                  onChange={handleStudentChange}
+                  className="w-full border p-2 rounded"
+                />
+              </div>
+
+
               <textarea
                 name="studentDescription"
                 placeholder="Description"
@@ -367,6 +413,7 @@ export default function TodayEnquiryList() {
                 value={studentForm.studentEmail}
                 onChange={handleStudentChange}
                 className="w-full border p-2 rounded"
+                required
               />
               <input
                 type="tel"
@@ -380,6 +427,35 @@ export default function TodayEnquiryList() {
                 maxLength={10} // ✅ ensures no more than 10 digits
                 inputMode="numeric" // ✅ mobile keyboard shows numbers
               />
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  Join Date
+                </label>
+                <input
+                  type="date"
+                  name="joinDate"
+                  value={studentForm.joinDate}
+                  onChange={handleStudentChange}
+                  className="w-full border p-2 rounded"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                  End Date
+                </label>
+                <input
+                  type="date"
+                  name="endDate"
+                  value={studentForm.endDate}
+                  onChange={handleStudentChange}
+                  className="w-full border p-2 rounded"
+                />
+              </div>
+
+
               <textarea
                 name="studentDescription"
                 placeholder="Description"
@@ -397,6 +473,8 @@ export default function TodayEnquiryList() {
                       studentEmail: "",
                       studentPhone: "",
                       studentDescription: "",
+                      joinDate: getTodayDate(),
+                      endDate: "",
                     });
                   }}
                   className="px-4 py-2 bg-gray-300 rounded"
@@ -414,6 +492,98 @@ export default function TodayEnquiryList() {
           </div>
         </div>
       )}
+
+      {isInterviewModalOpen && (
+        <div className="fixed inset-0 flex items-start justify-center bg-black/50 z-50">
+          <div className="mt-32 w-full max-w-md rounded-2xl bg-white p-6 shadow-lg mx-4">
+            <h2 className="mb-4 text-xl font-semibold">
+              Add Interview Student
+            </h2>
+
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                if (!interviewStudentId) return;
+
+                try {
+                  await axios.put(
+                    `http://localhost:8000/api/v1/masterManagement/addStudent/${interviewStudentId}`,
+                    {
+                      interviewStudent: interviewValue,
+                    }
+                  );
+
+                  alert("Interview status updated");
+
+                  // refresh list
+                  const res = await axios.get(
+                    `http://localhost:8000/api/v1/masterManagement/addStudent/?batch_name=${encodeURIComponent(
+                      classData.batch_name
+                    )}`
+                  );
+                  setStudents(res.data.addStudent || []);
+
+                  setIsInterviewModalOpen(false);
+                  setInterviewStudentId(null);
+                } catch {
+                  alert("Failed to update interview status");
+                }
+              }}
+              className="space-y-4"
+            >
+              {/* Radio Buttons */}
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-700">
+                  Interview Student?
+                </p>
+
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="interviewStudent"
+                    value="No"
+                    checked={interviewValue === "No"}
+                    onChange={() => setInterviewValue("No")}
+                  />
+                  <span>No</span>
+                </label>
+
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="interviewStudent"
+                    value="Yes"
+                    checked={interviewValue === "Yes"}
+                    onChange={() => setInterviewValue("Yes")}
+                  />
+                  <span>Yes</span>
+                </label>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsInterviewModalOpen(false);
+                    setInterviewStudentId(null);
+                  }}
+                  className="px-4 py-2 bg-gray-300 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </>
   );
 }

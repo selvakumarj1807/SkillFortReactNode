@@ -77,7 +77,7 @@ export default function AdminSignInForm() {
                   Email <span className="text-error-500">*</span>
                 </Label>
                 <Input
-                  placeholder="info@gmail.com"
+                  placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />

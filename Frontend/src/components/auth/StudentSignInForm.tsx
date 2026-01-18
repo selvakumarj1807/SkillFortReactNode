@@ -93,7 +93,7 @@ export default function StudentSignInForm() {
               Email <span className="text-error-500">*</span>
             </Label>
             <Input
-              placeholder="arun.kumar@example.com"
+              placeholder="Enter your email"
               value={studentEmail}
               onChange={(e) => setStudentEmail(e.target.value)}
             />
@@ -110,7 +110,7 @@ export default function StudentSignInForm() {
               Phone Number <span className="text-error-500">*</span>
             </Label>
             <Input
-              placeholder="+91-9876543210"
+              placeholder="Enter your phone number"
               value={studentPhone}
               onChange={(e) => setStudentPhone(e.target.value)}
             />

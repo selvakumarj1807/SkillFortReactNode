@@ -13,10 +13,18 @@ type Student = {
   studentDescription: string;
   techStack: string;
   followUp: string;
+  interviewStudent?: string;
+  joinDate?: string;
+  endDate?: string;
 };
 
+// UPDATED API URL
+const FETCH_API_URL =
+  "http://localhost:8000/api/v1/masterManagement/addStudent/?interviewStudent=Yes";
+
+
 const API_URL =
-  "http://localhost:8000/api/v1/masterManagement/addInterviewStudents";
+  "http://localhost:8000/api/v1/masterManagement/addStudent";
 
 const TECH_STACK_OPTIONS = [
   "React",
@@ -49,6 +57,11 @@ export default function InterviewStudents() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
 
+  const getTodayDate = () => {
+    return new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+  };
+
+
   const [studentForm, setStudentForm] = useState<Omit<Student, "_id">>({
     studentName: "",
     studentEmail: "",
@@ -56,13 +69,16 @@ export default function InterviewStudents() {
     studentDescription: "",
     techStack: "",
     followUp: "",
+    interviewStudent: "Yes",
+    joinDate: getTodayDate(),
+    endDate: "",
   });
 
   // ================= FETCH =================
   const fetchStudents = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(API_URL);
+      const res = await axios.get(FETCH_API_URL);
       setStudents(res.data?.addStudent || []);
     } catch {
       setError("Failed to load students");
@@ -85,12 +101,17 @@ export default function InterviewStudents() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const payload = {
+      ...studentForm,
+      interviewStudent: "Yes", // 🔥 FORCE VALUE
+    };
+
     try {
       if (editId) {
-        await axios.put(`${API_URL}/${editId}`, studentForm);
+        await axios.put(`${API_URL}/${editId}`, payload);
         alert("Student updated");
       } else {
-        await axios.post(API_URL, studentForm);
+        await axios.post(API_URL, payload);
         alert("Student added");
       }
 
@@ -101,6 +122,9 @@ export default function InterviewStudents() {
         studentDescription: "",
         techStack: "",
         followUp: "",
+        interviewStudent: "Yes",
+        joinDate: getTodayDate(),
+        endDate: "",
       });
 
       setEditId(null);
@@ -118,8 +142,16 @@ export default function InterviewStudents() {
       studentEmail: stu.studentEmail,
       studentPhone: stu.studentPhone,
       studentDescription: stu.studentDescription,
-      techStack: stu.techStack,
-      followUp: stu.followUp,
+      techStack: TECH_STACK_OPTIONS.includes(stu.techStack)
+        ? stu.techStack
+        : "",
+
+      followUp: FOLLOW_UP_OPTIONS.includes(stu.followUp)
+        ? stu.followUp
+        : "",
+      interviewStudent: "Yes",
+      joinDate: stu.joinDate || getTodayDate(),
+      endDate: stu.endDate || "",
     });
     setIsModalOpen(true);
   };
@@ -144,8 +176,8 @@ export default function InterviewStudents() {
       <PageBreadCrumbEnquiryList pageTitle="Interview Students" />
 
       {/* SUMMARY */}
-     <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
-        
+      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div className="flex justify-between items-center bg-teal-700 text-white rounded-xl p-4">
@@ -188,6 +220,7 @@ export default function InterviewStudents() {
 
               {expandedId === stu._id && (
                 <div className="mt-3">
+                  {/*
                   <p className="text-sm text-gray-600"><strong>Gmail: </strong>{stu.studentEmail}</p>
                   <p className="text-sm text-gray-500 mt-1">
                     <strong>Description: </strong>{stu.studentDescription}
@@ -198,7 +231,7 @@ export default function InterviewStudents() {
                   <p className="text-sm">
                     <strong>Follow Up:</strong> {stu.followUp}
                   </p>
-
+                  */}
                   <div className="flex justify-end gap-3 mt-3">
                     <button
                       onClick={(e) => {
@@ -271,6 +304,89 @@ export default function InterviewStudents() {
                 inputMode="numeric"
               />
 
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Tech Stack */}
+                <div className="flex flex-col">
+                  <label className="mb-1 text-sm font-medium text-gray-700">
+                    Tech Stack
+                  </label>
+                  <select
+                    name="techStack"
+                    value={studentForm.techStack}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+                  >
+                    <option value="" disabled>
+                      Select Tech Stack
+                    </option>
+                    {TECH_STACK_OPTIONS.map((tech) => (
+                      <option key={tech} value={tech}>
+                        {tech}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Follow Up */}
+                {/* 
+                <div className="flex flex-col">
+                  <label className="mb-1 text-sm font-medium text-gray-700">
+                    Follow Up
+                  </label>
+                  <select
+                    name="followUp"
+                    value={studentForm.followUp}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+                  >
+                    <option value="" disabled>
+                      Select Follow-up Person
+                    </option>
+                    {FOLLOW_UP_OPTIONS.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              
+                */}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col">
+                  <label className="mb-1 text-sm font-medium text-gray-700">
+                    Join Date
+                  </label>
+                  <input
+                    type="date"
+                    name="joinDate"
+                    value={studentForm.joinDate}
+                    onChange={handleChange}
+                    placeholder="Select join date"
+                    required
+                    className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <label className="mb-1 text-sm font-medium text-gray-700">
+                    End Date
+                  </label>
+                  <input
+                    type="date"
+                    name="endDate"
+                    value={studentForm.endDate}
+                    onChange={handleChange}
+                    placeholder="Select end date"
+                    className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+
+
               <textarea
                 name="studentDescription"
                 value={studentForm.studentDescription}
@@ -279,42 +395,24 @@ export default function InterviewStudents() {
                 className="w-full border p-2 rounded"
               />
 
-              <select
-                name="techStack"
-                value={studentForm.techStack}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-                required
-              >
-                <option value="">Select Tech Stack</option>
-                {TECH_STACK_OPTIONS.map((tech) => (
-                  <option key={tech} value={tech}>
-                    {tech}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                name="followUp"
-                value={studentForm.followUp}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-                required
-              >
-                <option value="">Select Follow-up</option>
-                {FOLLOW_UP_OPTIONS.map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
-
               <div className="flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => {
                     setIsModalOpen(false);
                     setEditId(null);
+                    setStudentForm({
+                      studentName: "",
+                      studentEmail: "",
+                      studentPhone: "",
+                      studentDescription: "",
+                      techStack: "",
+                      followUp: "",
+                      interviewStudent: "Yes",
+                      joinDate: getTodayDate(),
+                      endDate: "",
+                    });
+
                   }}
                   className="px-4 py-2 bg-gray-300 rounded"
                 >

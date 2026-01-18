@@ -21,6 +21,8 @@ import StudentHome from "./pages/Dashboard/StudentHome";
 import StudentSignIn from "./pages/AuthPages/StudentSignIn";
 
 import StudentProtectedRoute from "./components/StudentProtectedRoute";
+import EnquiryForm from "./pages/EnquiryForm";
+import CandidateInformation from "./pages/candidateInformation";
 
 export default function App() {
   return (
@@ -30,8 +32,9 @@ export default function App() {
         <Routes>
           {/* Enquiry Layout */}
           <Route element={<AppLayout />}>
-            <Route index path="/" element={<Navigate to="/enquiryForm" replace />} />
-            <Route path="/enquiryForm" element={<Blank />} />
+            <Route index path="/" element={<Navigate to="/portal" replace />} />
+            <Route path="/portal" element={<Blank />} />
+            <Route path="/enquiryForm" element={<EnquiryForm />} />
           </Route>
 
           {/* Admin Layout */}
@@ -60,7 +63,7 @@ export default function App() {
             </StudentProtectedRoute>    
             }>
             <Route index path="/student" element={<StudentHome />} />
-            <Route path="/enquiryForm" element={<Blank />} />
+            <Route path="/candidateInformation" element={<CandidateInformation />} />
           </Route>
 
 
