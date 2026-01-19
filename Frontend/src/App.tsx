@@ -23,6 +23,7 @@ import StudentSignIn from "./pages/AuthPages/StudentSignIn";
 import StudentProtectedRoute from "./components/StudentProtectedRoute";
 import EnquiryForm from "./pages/EnquiryForm";
 import CandidateInformation from "./pages/candidateInformation";
+import StudentDetails from "./pages/StudentDetails";
 
 export default function App() {
   return (
@@ -54,6 +55,7 @@ export default function App() {
             <Route path="/enquiryDetails/:id" element={<EnquiryDetails />} />
             <Route path="/addStudents/:id" element={<AddStudents />} />
             <Route path="/interviews" element={<Interviews />} />
+            <Route path="/studentDetails" element={<StudentDetails />} />
           </Route>
 
           {/* Student Layout */}

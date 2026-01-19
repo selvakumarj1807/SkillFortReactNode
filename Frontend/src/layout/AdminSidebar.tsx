@@ -30,7 +30,8 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Student Management",
-    subItems: [{ name: "Course", path: "/addRequiredCource", pro: false },
+    subItems: [{ name: "Students", path: "/studentDetails", pro: false },
+      { name: "Course", path: "/addRequiredCource", pro: false },
     { name: "Interview Students", path: "/interviews", pro: false }
     ],
   },
